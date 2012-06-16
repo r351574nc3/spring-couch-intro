@@ -15,7 +15,7 @@
 
     <context:annotation-config />
 
-    <bean id="jsonConfigFactory" class="com.clearboxmedia.srs.json.JsonConfigFactory"/>
+    <bean id="jsonConfigFactory" class="com.clearboxmedia.couchspring.json.JsonConfigFactory"/>
     
     <bean id="jsonConfig" factory-bean="jsonConfigFactory" factory-method="createJsonConfig"/>
 
@@ -25,7 +25,7 @@
     
     <bean id="systemDatabase" class="org.jcouchdb.db.Database">
         <constructor-arg ref="couchDBServer"/>
-        <constructor-arg value="syncrswim-dev"/>
+        <constructor-arg value="couchspring-dev"/>
         <property name="jsonConfig" ref="jsonConfig"/>
     </bean>
 
