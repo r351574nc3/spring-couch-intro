@@ -1,0 +1,11 @@
+{
+	"Event": {
+		"properties" : {
+			"docType": {"type": "string", "store":"yes"},
+			"description" : {"type" : "string", "store" : "yes"},
+			"title" : {"type" : "string", "store" : "yes"},
+			"startTime" : {"type": "date", "store": "yes"},
+			"tags" : {"type" : "string", "index_name" : "tag"}
+		}
+	}
+}

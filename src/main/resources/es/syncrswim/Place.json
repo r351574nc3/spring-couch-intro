@@ -1,0 +1,13 @@
+{
+	"Place": {
+		"properties" : {
+			"docType": {"type": "string", "store":"yes"},
+			"name" : {"type" : "string", "store" : "yes"},
+			"city" : {"type" : "string", "store" : "yes"},
+			"state" : {"type" : "string", "store" : "yes"},
+			"address1" : {"type" : "string", "store" : "yes"},
+			"address1" : {"type" : "string", "store" : "yes"},
+			"location" : {"type" : "geo_point", "store":"yes", "lat_lon":"true"}
+		}
+	}
+}
