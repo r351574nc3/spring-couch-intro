@@ -34,8 +34,8 @@ public class Event extends AppDocument {
     }
     
     public Event(Map data, String provider) {
-        this.externalId          = data.get("id").toString();
-        this.provider            = provider;
+        this.setExternalId(data.get("id").toString());
+        this.setProvider(provider);
         this.title               = (String) data.get("title");
         this.startTime           = (String) data.get("start_date");
         this.stopTime            = (String) data.get("stop_date");

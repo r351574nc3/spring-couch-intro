@@ -1,9 +1,9 @@
-package com.clearboxmedia.srs.domain;
+package com.clearboxmedia.couchspring.domain;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Place extends SrsDocument {
+public class Place extends AppDocument {
     private String id;
     private String name;
     private String address1;
@@ -23,8 +23,8 @@ public class Place extends SrsDocument {
     public Place(final LinkedHashMap data, String provider) {
         System.out.println("populating venue:" + data);
         
-        this.externalId          = data.get("id").toString();
-        this.provider            = provider;
+        this.setExternalId(data.get("id").toString());
+        this.setProvider(provider);
         this.name               = (String) data.get("title");
         this.address1           = (String) data.get("address");
         this.address2            = (String) data.get("address2");

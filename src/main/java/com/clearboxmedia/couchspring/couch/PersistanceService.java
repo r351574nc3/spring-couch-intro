@@ -1,13 +1,11 @@
-package com.clearboxmedia.srs.couch;
+package com.clearboxmedia.couchspring.couch;
 
-import com.clearboxmedia.srs.domain.SrsDocument;
+import com.clearboxmedia.couchspring.domain.AppDocument;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.jcouchdb.db.Database;
-
-import static com.clearboxmedia.srs.logging.BufferedLogger.*;
 
 /**
  * Service responsible for persisting changes with couch
@@ -22,14 +20,12 @@ public class PersistanceService {
     /**
      * Saves a document to couchdb
      */
-    public void save(final SrsDocument document) {
-        info("Saving a document");
+    public void save(final AppDocument document) {
         database.createDocument(document);
     }
     
-    public SrsDocument getDocument(String id, Class clazz) {
-    	info("Retrieving document: " + id);
-    	return (SrsDocument)database.getDocument(clazz, id);
+    public AppDocument getDocument(String id, Class clazz) {
+    	return (AppDocument)database.getDocument(clazz, id);
     }
 
     public void setDatabase(final Database database) {
