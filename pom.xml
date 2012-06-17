@@ -86,7 +86,7 @@
             </goals>
             <phase>package</phase>
             <configuration>
-              <path>syncrswim</path>
+              <path>couchspring</path>
               <attachArtifactClassifierType>war</attachArtifactClassifierType>
             </configuration>
           </execution>
