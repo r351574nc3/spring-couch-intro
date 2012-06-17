@@ -35,5 +35,7 @@ import org.junit.*;
  *
  * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/app-config.xml")
 public class CouchDeleteTest {
 }
