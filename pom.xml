@@ -26,12 +26,6 @@
     <junit.version>4.10</junit.version>
     <joda-time.version>2.1</joda-time.version>
     <log4j.version>1.2.16</log4j.version>
-    <spock.version>0.6-groovy-1.8</spock.version>
-    <spring-elasticsearch.version>0.0.2</spring-elasticsearch.version>
-	<elasticsearch.version>0.19.4</elasticsearch.version>
-    <gmaven-plugin.version>1.3</gmaven-plugin.version>
-    <gmaven-runtime.version>1.3</gmaven-runtime.version>
-    <groovy-all.version>1.8.6</groovy-all.version>
   </properties>
   
   <dependencies>
@@ -88,8 +82,8 @@
   </profiles>
 
   <scm>
-    <connection>scm:git:git@clearboxmedia.com:syncrswim.git</connection>
-    <developerConnection>scm:git:git@clearboxmedia.com:syncrswim.git</developerConnection>
+    <connection>scm:git:git@github.com:r351574nc3/spring-couch-intro.git</connection>
+    <developerConnection>scm:git:git@github.com:r351574nc3/spring-couch-intro.git</developerConnection>
     <url>http://www.clearboxmedia.com</url>
   </scm>
   
