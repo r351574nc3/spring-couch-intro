@@ -14,14 +14,14 @@
   <description></description>
 
   <properties>
+    <maven-failsafe-plugin.version>2.12</maven-failsafe-plugin.version>
+    <maven-surefire-plugin.version>2.12</maven-surefire-plugin.version>
     <spring.framework.version>3.1.0.RELEASE</spring.framework.version>
     <spring-security-oauth.version>3.19.SS3</spring-security-oauth.version>
     <spring-xml.version>2.0.0.RELEASE</spring-xml.version>
     <netty.version>3.2.7.Final</netty.version>
     <jcouchdb.version>0.11.0-1</jcouchdb.version>
-    <jersey.version>1.13-b01</jersey.version>
     <svenson.version>1.4.0</svenson.version>
-    <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
     <jackson-asl.version>1.9.5</jackson-asl.version>
     <junit.version>4.10</junit.version>
     <joda-time.version>2.1</joda-time.version>
@@ -30,91 +30,77 @@
   
   <dependencies>
     <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aop</artifactId>
-        <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.ws</groupId>
-        <artifactId>spring-xml</artifactId>
-        <version>${spring-xml.version}</version>
-      </dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.framework.version}</version>
+    </dependency>
     <dependency>
-        <groupId>com.google.code.jcouchdb</groupId>
-        <artifactId>jcouchdb</artifactId>
-        <version>${jcouchdb.version}</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>${spring.framework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.framework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.framework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.framework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ws</groupId>
+      <artifactId>spring-xml</artifactId>
+      <version>${spring-xml.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.jcouchdb</groupId>
+      <artifactId>jcouchdb</artifactId>
+      <version>${jcouchdb.version}</version>
     </dependency>
   </dependencies>
   
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>${tomcat7-maven-plugin.version}</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-failsafe-plugin.version}</version>
+        <configuration>
+          <!-- Skip the normal tests, we'll run them in the integration-test phase -->
+          <skip>true</skip>
+        </configuration>
+        
         <executions>
           <execution>
-            <id>dev-mode-war</id>
+            <id>integration-tests</id>
+            <phase>integration-test</phase>
             <goals>
-              <goal>exec-war-only</goal>
+              <goal>integration-test</goal>
             </goals>
-            <phase>package</phase>
             <configuration>
-              <path>couchspring</path>
-              <attachArtifactClassifierType>war</attachArtifactClassifierType>
+              <skip>false</skip>
+              <includes>
+                <include>**/it/*Test.java</include>
+              </includes>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>rest-docs</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.8.1</version>
-            <configuration>
-              <reportOutputDirectory>${project.build.directory}/rest-apidocs</reportOutputDirectory>
-              <stylesheetfile>src/main/javadoc/stylesheet.css</stylesheetfile>
-              <nonavbar>true</nonavbar>
-              <excludePackageNames>*.polling</excludePackageNames>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <scm>
     <connection>scm:git:git@github.com:r351574nc3/spring-couch-intro.git</connection>
