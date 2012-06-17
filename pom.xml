@@ -23,6 +23,7 @@
     <svenson.version>1.4.0</svenson.version>
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
     <jackson-asl.version>1.9.5</jackson-asl.version>
+    <junit.version>4.10</junit.version>
     <joda-time.version>2.1</joda-time.version>
     <log4j.version>1.2.16</log4j.version>
     <spock.version>0.6-groovy-1.8</spock.version>
@@ -48,6 +49,12 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>syncrswim-providers-eventful</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
     </dependency>
   </dependencies>
   
