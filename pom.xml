@@ -49,7 +49,7 @@
     <spring-security-oauth.version>3.19.SS3</spring-security-oauth.version>
     <spring-xml.version>2.0.0.RELEASE</spring-xml.version>
     <netty.version>3.2.7.Final</netty.version>
-    <jcouchdb.version>0.11.0-1</jcouchdb.version>
+    <jcouchdb.version>1.0.1</jcouchdb.version>
     <svenson.version>1.4.0</svenson.version>
     <jackson-asl.version>1.9.5</jackson-asl.version>
     <junit.version>4.10</junit.version>
@@ -121,6 +121,10 @@
             </goals>
             <configuration>
               <skip>false</skip>
+              <systemPropertyVariables>
+                <couchdb.username>${couchdb.username}</couchdb.username>
+                <couchdb.password>${couchdb.password}</couchdb.password>
+              </systemPropertyVariables>
               <includes>
                 <include>**/it/*Test.java</include>
               </includes>

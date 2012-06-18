@@ -11,6 +11,6 @@
     <bean id="systemUpdater" class="org.jcouchdb.util.CouchDBUpdater" init-method="updateDesignDocuments">
         <property name="createDatabase" value="true"/>
         <property name="database" ref="systemDatabase"/>
-        <property name="designDocumentDir" value="WEB-INF/designdocs/"/>
+        <property name="designDocumentDir" value="designdocs/"/>
     </bean>
 </beans>

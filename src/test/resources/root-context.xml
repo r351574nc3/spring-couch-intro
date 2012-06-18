@@ -14,7 +14,8 @@
   <context:annotation-config />
 
   <context:component-scan base-package="com.clearboxmedia.springcouch" />
-  <context:component-scan base-package="com.clearboxmedia.springcouch.couch" />
-  <context:component-scan base-package="com.clearboxmedia.springcouch.json" />
+  
+  <import resource="classpath:couchdb-config.xml" />
+  <import resource="classpath:couchdb-services.xml" />
 
 </beans>
