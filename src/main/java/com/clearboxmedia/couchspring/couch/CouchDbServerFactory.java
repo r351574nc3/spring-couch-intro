@@ -30,8 +30,7 @@ package com.clearboxmedia.couchspring.couch;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.jcouchdb.db.ServerImpl;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
