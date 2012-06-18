@@ -36,6 +36,8 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
+import org.springframework.stereotype.Component;
+
 /**
  *
  */
@@ -64,6 +66,5 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
     }
 
     public void afterPropertiesSet()  {
-        start();
     }
 }
