@@ -29,7 +29,6 @@
 package com.clearboxmedia.couchspring;
 
 import com.clearboxmedia.couchspring.domain.Place;
-import com.clearboxmedia.couchspring.domain.PlaceWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -29,7 +29,7 @@
 package com.clearboxmedia.couchspring;
 
 import com.clearboxmedia.couchspring.couch.PersistanceService;
-import com.clearboxmedia.couchspring.domain.EventWrapper;
+import com.clearboxmedia.couchspring.domain.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
