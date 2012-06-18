@@ -29,6 +29,9 @@
 package com.clearboxmedia.springcouch.it;
 
 import org.junit.*;
+import org.junit.runner.RunWith;
+
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Tests use cases for saving documents to a couch database
