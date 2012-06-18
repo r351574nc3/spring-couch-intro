@@ -21,9 +21,17 @@
     
     <bean id="jsonConfig" factory-bean="jsonConfigFactory" factory-method="createJsonConfig"/>
 
-    <bean id="couchDBServer" class="com.clearboxmedia.couchspring.couch.ServerImpl">
-        <constructor-arg value="${couchdb.url}"/>
-        <property name="credentials" ref="couchPrincipal" />
+    <!-- If my db requires username/password, I will need to set up a Principal -->
+    <bean id="couchPrincipal" class="org.apache.http.auth.UsernamePasswordCredentials">
+      <constructor-arg value="${couchdb.username}" />
+      <constructor-arg value="${couchdb.password}" />
+    </bean>
+    
+    <bean id="serverFactory" class="com.clearboxmedia.couchspring.couch.CouchDbServerFactory" />
+    
+    <bean id="couchDBServer" factory-bean="serverFactory" factory-method="createCouchDbServerInstance">
+      <constructor-arg value="${couchdb.url}"/>
+      <constructor-arg name="credentials" ref="couchPrincipal" />
     </bean>
     
     <bean id="systemDatabase" class="org.jcouchdb.db.Database">
@@ -32,9 +40,4 @@
         <property name="jsonConfig" ref="jsonConfig"/>
     </bean>
 
-    <bean id="couchPrincipal" class="org.apache.http.auth.UsernamePasswordCredentials">
-      <constructor-arg value="${couchdb.username}" />
-      <constructor-arg value="${couchdb.userpassword}" />
-    </bean>
-    
 </beans>

@@ -28,8 +28,15 @@
  */
 package com.clearboxmedia.couchspring.couch;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.jcouchdb.db.ServerImpl;
+
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
+
+import java.util.logging.Logger;
 
 /**
  * Overrides {@link org.jcouchdb.db.ServerImpl} to force AuthScope.ANY for credentials
@@ -37,17 +44,25 @@ import org.apache.http.auth.Credentials;
  *
  * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
-public class ServerImpl extends org.jcouchdb.db.ServerImpl {
+public class CouchDbServerFactory {
+    public static final Logger LOG = Logger.getLogger(CouchDbServerFactory.class.getSimpleName());
 
-    public ServerImpl(final String hostname) {
-        super(hostname);
+    public ServerImpl createCouchDbServerInstance(final String url) throws Exception {
+        return this.createCouchDbServerInstance(url, null);
     }
 
-    public ServerImpl(final String hostname, int port) {
-        super(hostname, port);
+    public ServerImpl createCouchDbServerInstance(final String url, final Credentials credentials) throws Exception {
+        return this.createCouchDbServerInstance(new URL(url), null);
     }
 
-    public void setCredentials(Credentials credentials) {
-        super.setCredentials(AuthScope.ANY, credentials);
+    public ServerImpl createCouchDbServerInstance(final URL url, final Credentials credentials) {
+        final ServerImpl retval = new ServerImpl(url.getHost(), url.getPort(), url.getProtocol().equals("https"));
+        if (credentials != null) {
+            retval.setCredentials(AuthScope.ANY, credentials);
+        }
+
+        LOG.warning("Creating Couch DB Server instance with port: " + url.getPort());
+
+        return retval;
     }
 }
