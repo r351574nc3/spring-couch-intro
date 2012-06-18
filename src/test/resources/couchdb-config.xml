@@ -22,7 +22,7 @@
     <bean id="jsonConfig" factory-bean="jsonConfigFactory" factory-method="createJsonConfig"/>
 
     <bean id="couchDBServer" class="com.clearboxmedia.couchspring.couch.ServerImpl">
-        <constructor-arg value="localhost"/>
+        <constructor-arg value="${couchdb.url}"/>
         <property name="credentials" ref="couchPrincipal" />
     </bean>
     

@@ -44,7 +44,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
     private ResourceLoader resourceLoader;
-
     
     @Autowired
     private RestTemplate restTemplate;

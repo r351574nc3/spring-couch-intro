@@ -122,6 +122,7 @@
             <configuration>
               <skip>false</skip>
               <systemPropertyVariables>
+                <couchdb.username>${couchdb.url}</couchdb.username>
                 <couchdb.username>${couchdb.username}</couchdb.username>
                 <couchdb.password>${couchdb.password}</couchdb.password>
               </systemPropertyVariables>
