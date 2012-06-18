@@ -39,6 +39,6 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/app-config.xml")
+@ContextConfiguration("/root-context.xml")
 public class CouchDeleteTest {
 }
