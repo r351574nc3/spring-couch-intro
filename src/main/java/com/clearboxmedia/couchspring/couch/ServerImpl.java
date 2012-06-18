@@ -39,6 +39,14 @@ import org.apache.http.auth.Credentials;
  */
 public class ServerImpl extends org.jcouchdb.db.ServerImpl {
 
+    public ServerImpl(final String hostname) {
+        super(hostname);
+    }
+
+    public ServerImpl(final String hostname, int port) {
+        super(hostname, port);
+    }
+
     public void setCredentials(Credentials credentials) {
         super.setCredentials(AuthScope.ANY, credentials);
     }

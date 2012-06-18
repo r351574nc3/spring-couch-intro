@@ -31,6 +31,8 @@ package com.clearboxmedia.springcouch.it;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -41,4 +43,5 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/root-context.xml")
 public class CouchDeleteTest {
+
 }
