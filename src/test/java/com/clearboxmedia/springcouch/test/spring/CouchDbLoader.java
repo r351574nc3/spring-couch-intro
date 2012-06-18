@@ -26,26 +26,44 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clearboxmedia.springcouch.it;
+package com.clearboxmedia.couchspring.test.spring;
 
-import org.junit.*;
-import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
 
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 /**
- * Tests use cases for saving documents to a couch database
  *
- * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/root-context.xml")
-public class CouchDeleteTest {
+@Component
+public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
+    private ResourceLoader resourceLoader;
 
-    @Test
-    public void testEventDelete() {
-        
+    
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public RestTemplate getRestTemplate() {
+        return this.restTemplate;
+    }
+
+    protected void setRestTemplate(final RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public void setResourceLoader(final ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
+    public ResourceLoader getResourceLoader() {
+        return resourceLoader;
+    }
+
+    public void afterPropertiesSet()  {
+        start();
     }
 }

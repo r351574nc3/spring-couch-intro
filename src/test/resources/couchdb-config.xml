@@ -15,12 +15,15 @@
 
     <context:annotation-config />
 
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
+
     <bean id="jsonConfigFactory" class="com.clearboxmedia.couchspring.json.JsonConfigFactory"/>
     
     <bean id="jsonConfig" factory-bean="jsonConfigFactory" factory-method="createJsonConfig"/>
 
-    <bean id="couchDBServer" class="org.jcouchdb.db.ServerImpl">
+    <bean id="couchDBServer" class="com.clearboxmedia.couchspring.couch.ServerImpl">
         <constructor-arg value="localhost"/>
+        <property name="credentials" ref="couchPrincipal" />
     </bean>
     
     <bean id="systemDatabase" class="org.jcouchdb.db.Database">
@@ -29,5 +32,9 @@
         <property name="jsonConfig" ref="jsonConfig"/>
     </bean>
 
+    <bean id="couchPrincipal" class="org.apache.http.auth.UsernamePasswordCredentials">
+      <constructor-arg value="${couchdb.username}" />
+      <constructor-arg value="${couchdb.userpassword}" />
+    </bean>
     
 </beans>

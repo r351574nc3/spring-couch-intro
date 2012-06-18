@@ -13,10 +13,16 @@
 
   <context:annotation-config />
 
-  <context:component-scan base-package="com.clearboxmedia.springcouch" />
-  
-  <import resource="classpath:couchdb-config.xml" />
-  <import resource="classpath:couchdb-services.xml" />
+  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+    <property name="messageConverters">
+      <list>
+        <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        </bean>
+        <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
+      </list>
+    </property>
+  </bean>
 
-  <import resource="classpath:test-config.xml" />
+  <context:component-scan base-package="com.clearboxmedia.springcouch.test.spring" />
+  
 </beans>
