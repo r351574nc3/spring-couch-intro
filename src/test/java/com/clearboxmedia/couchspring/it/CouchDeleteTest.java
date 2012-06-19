@@ -56,21 +56,13 @@ public class CouchDeleteTest {
 
     @Test
     public void testEventDelete() {
-        Map document = database.getDocument(Map.class, "1389296423");
+        Map document = database.getDocument(Map.class, "3083848875");
         assertTrue(document != null);
         database.delete(document);
-        document = database.getDocument(Map.class, "1389296423");
+        document = database.getDocument(Map.class, "3083848875");
         assertTrue(document == null);
     }
 
-    @Test
-    public void testEventDelete_revision() {
-        Map document = database.getDocument(Map.class, "2231107302");
-        assertTrue(document != null);
-        database.delete("2231107302", "1-128c1bfde2c504d69297cc931247f654");
-        document = database.getDocument(Map.class, "1389296423");
-        assertTrue(document == null);
-    }
 
     @Test
     public void testEventDelete_NotExists() {

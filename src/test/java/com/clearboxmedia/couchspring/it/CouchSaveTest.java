@@ -54,40 +54,40 @@ public class CouchSaveTest {
     @Autowired
     protected Database database;
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testEventSave_Exists() {
-        Map document = database.getDocument(Map.class, "1389296423");
+        Map document = database.getDocument(Map.class, "2875977125");
         assertTrue(document != null);
 
         // Resave of document will throw an exception
         database.createDocument(document);
-        document = database.getDocument(Map.class, "1389296423");
+        document = database.getDocument(Map.class, "2875977125");
         assertTrue(document == null);
     }
 
     @Test
     public void testEventSave_Update() {
-        Map document = database.getDocument(Map.class, "2231107302");
+        Map document = database.getDocument(Map.class, "2875977125");
         assertTrue(document != null);
 
-        assertTrue(document.get("postalCode").equals("85719"));
-        document.put("postalCode", "85701");
+        assertTrue(document.get("state").equals("AZ"));
+        document.put("state", "CA");
         
         database.createOrUpdateDocument(document);
         
-        Map newdocument = database.getDocument(Map.class, "2231107302");
-        assertTrue(document == null);
-        assertTrue(document.get("postalCode").equals("85701"));
+        Map newdocument = database.getDocument(Map.class, "2875977125");
+        assertTrue(document != null);
+        assertTrue(document.get("state").equals("CA"));
     }
 
     @Test
     public void testEventSave() {
-        Map document = database.getDocument(Map.class, "1389296423");
+        Map document = database.getDocument(Map.class, "2875977125");
         assertTrue(document != null);
         
         // Clears out the id. Couch will create a new one.
         document.remove("id");
         database.createOrUpdateDocument(document);
-        assertFalse(document.get("id").equals("1389296423"));
+        assertFalse(document.get("id").equals("2875977125"));
     }
 }
