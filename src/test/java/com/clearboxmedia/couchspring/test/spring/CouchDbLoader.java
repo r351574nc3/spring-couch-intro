@@ -53,6 +53,8 @@ import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.clearboxmedia.couchspring.domain.Event;
+
 import static com.clearboxmedia.logging.FormattedLogger.*;
 
 /**
@@ -122,8 +124,8 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
         
         final List toLoad = new ArrayList();
         for (final Map<String,Object> row : (List<Map<String,Object>>) eventData.get("rows")) {
-            warn("Loading %s", row.get("value"));
-            toLoad.add(row.get("value"));
+            warn("Loading %s", row.get("doc"));
+            toLoad.add(row.get("doc"));
         }
         getDatabase().bulkCreateDocuments(toLoad, false);
     }
