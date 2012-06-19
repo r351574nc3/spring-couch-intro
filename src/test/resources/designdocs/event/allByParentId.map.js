@@ -1,5 +1,5 @@
 function(doc) {
     if (doc.type == 'event') {
-        emit(doc.parentId, {value:1});
+        emit(doc.parentId, null);
     }
 }
