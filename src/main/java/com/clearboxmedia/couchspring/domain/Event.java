@@ -146,4 +146,5 @@ public class Event extends AppDocument {
     public void setLinks(final Map<String,String> links) {
         this.links = links;
     }
+
 }

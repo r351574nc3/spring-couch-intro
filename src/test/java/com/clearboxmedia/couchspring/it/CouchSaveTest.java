@@ -35,6 +35,9 @@ import java.util.Map;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import com.clearboxmedia.couchspring.domain.Event;
+import com.clearboxmedia.couchspring.domain.Place;
+
 import org.jcouchdb.db.Database;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,38 +59,45 @@ public class CouchSaveTest {
 
     @Test(expected = IllegalStateException.class)
     public void testEventSave_Exists() {
-        Map document = database.getDocument(Map.class, "2875977125");
+        Event document = database.getDocument(Event.class, "2875977125");
         assertTrue(document != null);
 
         // Resave of document will throw an exception
         database.createDocument(document);
-        document = database.getDocument(Map.class, "2875977125");
+        document = database.getDocument(Event.class, "2875977125");
         assertTrue(document == null);
     }
 
     @Test
     public void testEventSave_Update() {
-        Map document = database.getDocument(Map.class, "2875977125");
+        Event document = database.getDocument(Event.class, "2875977125");
         assertTrue(document != null);
 
-        assertTrue(document.get("state").equals("AZ"));
-        document.put("state", "CA");
+        document.setDescription("Testing out save");
         
         database.createOrUpdateDocument(document);
         
-        Map newdocument = database.getDocument(Map.class, "2875977125");
+        Event newdocument = database.getDocument(Event.class, "2875977125");
         assertTrue(document != null);
-        assertTrue(document.get("state").equals("CA"));
+        assertTrue(document.getDescription().equals("Testing out save"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testEventSave_Exists2() {
+        Event document = database.getDocument(Event.class, "2875977125");
+        assertTrue(document != null);
+        
+        database.createDocument(document);
+        assertFalse(document.getId().equals("2875977125"));
     }
 
     @Test
     public void testEventSave() {
-        Map document = database.getDocument(Map.class, "2875977125");
-        assertTrue(document != null);
+        Event document = new Event();
+        document.setTitle("Test");
+        assertTrue(document.getId() == null);
         
-        // Clears out the id. Couch will create a new one.
-        document.remove("id");
-        database.createOrUpdateDocument(document);
-        assertFalse(document.get("id").equals("2875977125"));
+        database.createDocument(document);
+        assertTrue(document.getId() != null);
     }
 }

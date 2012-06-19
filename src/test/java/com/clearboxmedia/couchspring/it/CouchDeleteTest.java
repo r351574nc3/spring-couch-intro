@@ -35,6 +35,8 @@ import static org.junit.Assert.*;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import com.clearboxmedia.couchspring.domain.Event;
+
 import org.jcouchdb.db.Database;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,20 +58,25 @@ public class CouchDeleteTest {
 
     @Test
     public void testEventDelete() {
-        Map document = database.getDocument(Map.class, "3083848875");
+        Event document = database.getDocument(Event.class, "3083848875");
         assertTrue(document != null);
         database.delete(document);
-        document = database.getDocument(Map.class, "3083848875");
-        assertTrue(document == null);
+        
+        try {
+            document = database.getDocument(Event.class, "3083848875");
+        }
+        catch (Exception e) {
+            assertTrue(e instanceof org.jcouchdb.exception.NotFoundException);
+        }
     }
 
 
-    @Test
+    @Test(expected = org.jcouchdb.exception.NotFoundException.class)
     public void testEventDelete_NotExists() {
-        Map document = database.getDocument(Map.class, "-2");
+        Event document = database.getDocument(Event.class, "-2");
         assertTrue(document != null);
         database.delete(document);
-        document = database.getDocument(Map.class, "-2");
+        document = database.getDocument(Event.class, "-2");
         assertTrue(document == null);
     }
 }
