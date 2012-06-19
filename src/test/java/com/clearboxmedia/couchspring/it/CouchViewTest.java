@@ -1,7 +1,8 @@
 package com.clearboxmedia.couchspring.it;
 
-import org.junit.*;
+import static org.junit.Assert.*;
 
+import org.junit.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,8 @@ public class CouchViewTest {
 	public void testListingQuery() {
 		String viewName = "event/list";
 		ViewResult<Event> results = database.queryView(viewName, Event.class, null, null);
+		assertNotNull(results);
+		assertEquals(results.getRows().size(), 28);
 	}
 	
     @Test
