@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jcouchdb.db.Database;
 import org.jcouchdb.db.Options;
 import org.jcouchdb.document.ViewResult;
 import org.junit.runner.RunWith;
@@ -22,19 +23,19 @@ import com.clearboxmedia.couchspring.domain.Event;
 public class CouchViewTest {
 	
 	@Autowired
-    private PersistanceService persistanceService;
+    private Database database;
 	
     @Test
 	public void testListingQuery() {
 		String viewName = "event/list";
-		ViewResult<Event> results = persistanceService.getDatabase().queryView(viewName, Event.class, null, null);
+		ViewResult<Event> results = database.queryView(viewName, Event.class, null, null);
 	}
 	
     @Test
 	public void testQueryByVenueId() {
 		String viewName = "event/allByVenueId";
 		
-		ViewResult<Event> results = persistanceService.getDatabase().queryViewByKeys(viewName, Event.class, Arrays.asList("id"), null, null);
+		ViewResult<Event> results = database.queryViewByKeys(viewName, Event.class, Arrays.asList("id"), null, null);
 		
 	}
 	
@@ -49,7 +50,7 @@ public class CouchViewTest {
 		opts.startKey(keys);
 		opts.endKey("\u9999");
 		
-		ViewResult<Event> results = persistanceService.getDatabase().queryViewByKeys(viewName, Event.class, null, opts, null);
+		ViewResult<Event> results = database.queryViewByKeys(viewName, Event.class, null, opts, null);
 		
 	}
 
