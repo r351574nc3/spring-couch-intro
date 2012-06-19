@@ -120,6 +120,10 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
         final ObjectMapper mapper = new ObjectMapper(new JsonFactory());
         final Map<String,Object> eventData = mapper.readValue(getResourceLoader().getResource("classpath:json_data/events.json").getInputStream(), Map.class);
         
-        getDatabase().bulkCreateDocuments((List<Map<String,Object>>) eventData.get("rows"), false);
+        final List toLoad = new ArrayList();
+        for (final Map<String,Object> row : (List<Map<String,Object>>) eventData.get("rows")) {
+            toLoad.add(row.get("value"));
+        }
+        getDatabase().bulkCreateDocuments(toLoad, false);
     }
 }
