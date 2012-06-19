@@ -124,8 +124,10 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
         
         final List toLoad = new ArrayList();
         for (final Map<String,Object> row : (List<Map<String,Object>>) eventData.get("rows")) {
-            warn("Loading %s", row.get("doc"));
-            toLoad.add(row.get("doc"));
+            final Map<String,Object> document = (Map<String, Object>) row.get("doc");
+            document.remove("_rev");
+            warn("Loading %s", document);
+            toLoad.add(document);
         }
         getDatabase().bulkCreateDocuments(toLoad, false);
     }
