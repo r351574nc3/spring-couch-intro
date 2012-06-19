@@ -1,5 +1,7 @@
 package com.clearboxmedia.couchspring.it;
 
+import org.junit.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,17 +19,18 @@ import com.clearboxmedia.couchspring.domain.Event;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/root-context.xml")
-@Component
 public class CouchViewTest {
 	
 	@Autowired
     private PersistanceService persistanceService;
 	
+    @Test
 	public void testListingQuery() {
 		String viewName = "event/list";
 		ViewResult<Event> results = persistanceService.getDatabase().queryView(viewName, Event.class, null, null);
 	}
 	
+    @Test
 	public void testQueryByVenueId() {
 		String viewName = "event/allByVenueId";
 		
@@ -35,6 +38,7 @@ public class CouchViewTest {
 		
 	}
 	
+    @Test
 	public void testQueryByDate() {
 		String viewName = "event/allByDate";
 		List<String> keys = new ArrayList<String>();

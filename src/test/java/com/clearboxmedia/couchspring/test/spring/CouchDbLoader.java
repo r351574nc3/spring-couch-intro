@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jcouchdb.db.Database;
+import org.jcouchdb.db.Options;
 import org.jcouchdb.document.ValueRow;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +53,15 @@ import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.util.logging.Logger;
+import static com.clearboxmedia.logging.FormattedLogger.*;
 
 /**
+ * Loads the couch database prior to testing with test data
  *
+ * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
 @Component
 public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
-    public static final Logger LOG = Logger.getLogger(CouchDbLoader.class.getSimpleName());
 
     @Autowired
     private Database database;
@@ -103,17 +105,18 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
      *
      */
     public void afterPropertiesSet()  throws Exception {
-        LOG.warning("Clearing database");
+        config("Clearing database");
 
         final List toDelete = new ArrayList();
-        for (final ValueRow<Map> row : getDatabase().listDocuments(null, null).getRows()) {
+        for (final ValueRow<Map> row : getDatabase().listDocuments(new Options(), null).getRows()) {
             if (isEvent(row)) {
+                config("Deleting %s", row.getValue().get("id"));
                 toDelete.add(row.getValue());
             }
         }
         getDatabase().bulkDeleteDocuments(toDelete);
 
-        LOG.warning("Loading data");
+        config("Loading data");
         final ObjectMapper mapper = new ObjectMapper(new JsonFactory());
         final Map<String,Object> eventData = mapper.readValue(getResourceLoader().getResource("classpath:json_data/events.json").getInputStream(), Map.class);
         

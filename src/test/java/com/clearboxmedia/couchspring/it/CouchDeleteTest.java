@@ -28,15 +28,22 @@
  */
 package com.clearboxmedia.couchspring.it;
 
+import java.util.Map;
+
+import static org.junit.Assert.*;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import org.jcouchdb.db.Database;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.springframework.test.context.ContextConfiguration;
 
 /**
- * Tests use cases for saving documents to a couch database
+ * Tests use cases for deleting documents to a couch database
  *
  * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
@@ -44,8 +51,33 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration("/root-context.xml")
 public class CouchDeleteTest {
 
+    @Autowired
+    protected Database database;
+
     @Test
     public void testEventDelete() {
-        
+        Map document = database.getDocument(Map.class, "1389296423");
+        assertTrue(document != null);
+        database.delete(document);
+        document = database.getDocument(Map.class, "1389296423");
+        assertTrue(document == null);
+    }
+
+    @Test
+    public void testEventDelete_revision() {
+        Map document = database.getDocument(Map.class, "2231107302");
+        assertTrue(document != null);
+        database.delete("2231107302", "1-128c1bfde2c504d69297cc931247f654");
+        document = database.getDocument(Map.class, "1389296423");
+        assertTrue(document == null);
+    }
+
+    @Test
+    public void testEventDelete_NotExists() {
+        Map document = database.getDocument(Map.class, "-2");
+        assertTrue(document != null);
+        database.delete(document);
+        document = database.getDocument(Map.class, "-2");
+        assertTrue(document == null);
     }
 }

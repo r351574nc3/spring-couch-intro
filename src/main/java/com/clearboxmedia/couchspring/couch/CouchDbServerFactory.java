@@ -43,7 +43,7 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.util.logging.Logger;
+import static com.clearboxmedia.logging.FormattedLogger.*;
 
 /**
  * Overrides {@link org.jcouchdb.db.ServerImpl} to force AuthScope.ANY for credentials
@@ -52,7 +52,6 @@ import java.util.logging.Logger;
  * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
 public class CouchDbServerFactory {
-    public static final Logger LOG = Logger.getLogger(CouchDbServerFactory.class.getSimpleName());
 
     public ServerImpl createCouchDbServerInstance(final String url) throws Exception {
         return this.createCouchDbServerInstance(url, null);
@@ -63,6 +62,7 @@ public class CouchDbServerFactory {
     }
 
     public ServerImpl createCouchDbServerInstance(final URL url, final Credentials credentials) {
+        config("Creating CouchDB server instance");
         final ServerImpl retval = new ServerImpl(url.getHost(), url.getPort(), url.getProtocol().equals("https"));
         if (credentials != null) {
             retval.setCredentials(AuthScope.ANY, credentials);
@@ -81,8 +81,7 @@ public class CouchDbServerFactory {
             final SchemeRegistry supportedSchemes = client.getConnectionManager().getSchemeRegistry();
             supportedSchemes.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
         }
-        LOG.warning("Creating Couch DB Server instance with port: " + url.getPort());
-        LOG.warning("Getting client " + client);
+        config("Creating Couch DB Server instance with port: " + url.getPort());
         
         return retval;
     }
