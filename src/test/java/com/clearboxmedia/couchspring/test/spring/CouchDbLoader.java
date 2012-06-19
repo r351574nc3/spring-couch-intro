@@ -28,6 +28,14 @@
  */
 package com.clearboxmedia.couchspring.test.spring;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.jcouchdb.db.Database;
+import org.jcouchdb.db.Options;
+import org.jcouchdb.document.ValueRow;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,11 +46,26 @@ import org.springframework.core.io.ResourceLoader;
 
 import org.springframework.stereotype.Component;
 
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import static com.clearboxmedia.logging.FormattedLogger.*;
+
 /**
+ * Loads the couch database prior to testing with test data
  *
+ * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
 @Component
 public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
+
+    @Autowired
+    private Database database;
+
     private ResourceLoader resourceLoader;
     
     @Autowired
@@ -64,6 +87,39 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
         return resourceLoader;
     }
 
-    public void afterPropertiesSet()  {
+    public void setDatabase(final Database database) {
+        this.database = database;
+    }
+
+    public Database getDatabase() {
+        return this.database;
+    }
+
+    protected boolean isEvent(final ValueRow<Map> row) {
+        final String docType = ((String) row.getValue().get("docType"));
+        return docType != null && docType.equalsIgnoreCase("event");
+    }
+
+   /**
+     * Read json data from a file and load it into the remote couch database.
+     *
+     */
+    public void afterPropertiesSet()  throws Exception {
+        config("Clearing database");
+
+        final List toDelete = new ArrayList();
+        for (final ValueRow<Map> row : getDatabase().listDocuments(new Options(), null).getRows()) {
+            if (isEvent(row)) {
+                config("Deleting %s", row.getValue().get("id"));
+                toDelete.add(row.getValue());
+            }
+        }
+        getDatabase().bulkDeleteDocuments(toDelete);
+
+        config("Loading data");
+        final ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+        final Map<String,Object> eventData = mapper.readValue(getResourceLoader().getResource("classpath:json_data/events.json").getInputStream(), Map.class);
+        
+        getDatabase().bulkCreateDocuments((List<Map<String,Object>>) eventData.get("rows"), false);
     }
 }

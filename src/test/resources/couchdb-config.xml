@@ -29,15 +29,14 @@
     
     <bean id="serverFactory" class="com.clearboxmedia.couchspring.couch.CouchDbServerFactory" />
     
-    <bean id="couchDBServer" factory-bean="serverFactory" factory-method="createCouchDbServerInstance">
+    <bean id="couchDbServer" factory-bean="serverFactory" factory-method="createCouchDbServerInstance">
       <constructor-arg value="${couchdb.url}"/>
       <constructor-arg name="credentials" ref="couchPrincipal" />
     </bean>
     
     <bean id="systemDatabase" class="org.jcouchdb.db.Database">
-        <constructor-arg ref="couchDBServer"/>
+        <constructor-arg ref="couchDbServer"/>
         <constructor-arg value="couchspring-dev"/>
         <property name="jsonConfig" ref="jsonConfig"/>
     </bean>
-
 </beans>

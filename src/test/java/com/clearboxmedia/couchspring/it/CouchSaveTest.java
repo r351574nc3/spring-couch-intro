@@ -28,12 +28,66 @@
  */
 package com.clearboxmedia.couchspring.it;
 
+import static org.junit.Assert.*;
+
+import java.util.Map;
+
 import org.junit.*;
+import org.junit.runner.RunWith;
+
+import org.jcouchdb.db.Database;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Tests use cases for saving documents to a couch database
  *
  * @author Leo Przybylski (leo [at] clearboxmedia.com)
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/root-context.xml")
 public class CouchSaveTest {
+
+    @Autowired
+    protected Database database;
+
+    @Test
+    public void testEventSave_Exists() {
+        Map document = database.getDocument(Map.class, "1389296423");
+        assertTrue(document != null);
+
+        // Resave of document will throw an exception
+        database.createDocument(document);
+        document = database.getDocument(Map.class, "1389296423");
+        assertTrue(document == null);
+    }
+
+    @Test
+    public void testEventSave_Update() {
+        Map document = database.getDocument(Map.class, "2231107302");
+        assertTrue(document != null);
+
+        assertTrue(document.get("postalCode").equals("85719"));
+        document.put("postalCode", "85701");
+        
+        database.createOrUpdateDocument(document);
+        
+        Map newdocument = database.getDocument(Map.class, "2231107302");
+        assertTrue(document == null);
+        assertTrue(document.get("postalCode").equals("85701"));
+    }
+
+    @Test
+    public void testEventSave() {
+        Map document = database.getDocument(Map.class, "1389296423");
+        assertTrue(document != null);
+        
+        // Clears out the id. Couch will create a new one.
+        document.remove("id");
+        database.createOrUpdateDocument(document);
+        assertFalse(document.get("id").equals("1389296423"));
+    }
 }
