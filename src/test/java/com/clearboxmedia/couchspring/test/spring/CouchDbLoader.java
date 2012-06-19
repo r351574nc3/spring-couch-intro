@@ -93,6 +93,10 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
         return this.database;
     }
 
+    protected boolean isEvent(final ValueRow<Map> row) {
+        return ((String) row.getValue().get("docType")).equalsIgnoreCase("event");
+    }
+
    /**
      * Read json data from a file and load it into the remote couch database.
      *
@@ -102,7 +106,7 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
 
         final List toDelete = new ArrayList();
         for (final ValueRow<Map> row : getDatabase().listDocuments(null, null).getRows()) {
-            if (row.getValue().get("docType").equalsIgnoreCase("event")) {
+            if (isEvent(row)) {
                 toDelete.add(row.getValue());
             }
         }
