@@ -23,6 +23,10 @@
     </property>
   </bean>
 
-  <context:component-scan base-package="com.clearboxmedia.springcouch.test.spring" />
+  <context:component-scan base-package="com.clearboxmedia.couchspring.test.spring" />
+
+  <!--
+  <bean id="testDataLoader" class="com.clearboxmedia.springcouch.test.spring.CouchDbLoader" />
+  -->
   
 </beans>

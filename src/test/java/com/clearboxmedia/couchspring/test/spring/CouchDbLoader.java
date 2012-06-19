@@ -28,6 +28,13 @@
  */
 package com.clearboxmedia.couchspring.test.spring;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.jcouchdb.db.Database;
+import org.jcouchdb.document.ValueRow;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,11 +45,25 @@ import org.springframework.core.io.ResourceLoader;
 
 import org.springframework.stereotype.Component;
 
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.util.logging.Logger;
+
 /**
  *
  */
 @Component
 public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
+    public static final Logger LOG = Logger.getLogger(CouchDbLoader.class.getSimpleName());
+
+    @Autowired
+    private Database database;
+
     private ResourceLoader resourceLoader;
     
     @Autowired
@@ -64,6 +85,33 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
         return resourceLoader;
     }
 
-    public void afterPropertiesSet()  {
+    public void setDatabase(final Database database) {
+        this.database = database;
+    }
+
+    public Database getDatabase() {
+        return this.database;
+    }
+
+   /**
+     * Read json data from a file and load it into the remote couch database.
+     *
+     */
+    public void afterPropertiesSet()  throws Exception {
+        LOG.warning("Clearing database");
+
+        final List toDelete = new ArrayList();
+        for (final ValueRow<Map> row : getDatabase().listDocuments(null, null).getRows()) {
+            if (row.getValue().get("docType").equalsIgnoreCase("event")) {
+                toDelete.add(row.getValue());
+            }
+        }
+        getDatabase().bulkDeleteDocuments(toDelete);
+
+        LOG.warning("Loading data");
+        final ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+        final Map<String,Object> eventData = mapper.readValue(getResourceLoader().getResource("classpath:json_data/events.json").getInputStream(), Map.class);
+        
+        getDatabase().bulkCreateDocuments((List<Map<String,Object>>) eventData.get("rows"), false);
     }
 }

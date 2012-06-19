@@ -39,5 +39,4 @@
         <constructor-arg value="couchspring-dev"/>
         <property name="jsonConfig" ref="jsonConfig"/>
     </bean>
-
 </beans>
