@@ -94,7 +94,8 @@ public class CouchDbLoader implements InitializingBean, ResourceLoaderAware {
     }
 
     protected boolean isEvent(final ValueRow<Map> row) {
-        return ((String) row.getValue().get("docType")).equalsIgnoreCase("event");
+        final String docType = ((String) row.getValue().get("docType"));
+        return docType != null && docType.equalsIgnoreCase("event");
     }
 
    /**
